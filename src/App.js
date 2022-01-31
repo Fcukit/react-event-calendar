@@ -5,10 +5,8 @@ import startOfWeek from "date-fns/startOfWeek";
 import React, { useEffect, useState } from "react";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./App.css";
-import styles from "./App.module.css";
 import Modal from "./components/Modal";
 
 const locales = {
