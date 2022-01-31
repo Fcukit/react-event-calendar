@@ -7,14 +7,13 @@ const Modal = ({ setIsOpen, selectedItem }) => {
   const alertAndClose = () => {
     setIsOpen(false)
     componentDidMount()
-    // alert(email)
   }
 
   const componentDidMount = () => {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ records: [{ fields: { "Event": ["recm8F5vrXCYUu2Cn"], "Email": email } }] })
+        body: JSON.stringify({ records: [{ fields: { "Event": [selectedItem[2]], "Email": email } }] })
     };
     fetch('https://api.airtable.com/v0/appD9YFLSX3Kflhy6/Clients?api_key=keyhPyeleDSLqACg1', requestOptions)
         .then(response => response.json())
