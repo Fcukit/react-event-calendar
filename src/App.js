@@ -8,7 +8,8 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./App.css";
-import Recipes from "./Recipes";
+import styles from "./App.module.css";
+import Modal from "./components/Modal";
 
 const locales = {
     "en-US": require("date-fns/locale/en-US"),
@@ -23,7 +24,14 @@ const localizer = dateFnsLocalizer({
 
 function App() {
     const [allEvents, setEvents] = useState([]);
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedItem, setSelectedItem] = useState(['', '', ''])
 
+    const tadam = (event) => {
+      setSelectedItem([event.title, event.description, event.id]);
+      setIsOpen(true)
+      return true;
+    }
     const getEvents = async () => {
         fetch("https://api.airtable.com/v0/appD9YFLSX3Kflhy6/Events?api_key=keyhPyeleDSLqACg1")
           .then((res) => res.json())
@@ -50,19 +58,18 @@ function App() {
         return () => clearInterval(timer);
       }, []);
 
-
-    useEffect(() => {
-
-      }, []);
-
-
     return (
         <div className="App">
             <h1>Calendar</h1>
             <h2>Airtable + React</h2>
             <div>
+              {/* <button className={styles.primaryBtn} onClick={() => setIsOpen(true)}>
+                Open Modal
+              </button> */}
+              {selectedItem.id}
+              {isOpen && <Modal selectedItem={selectedItem} setIsOpen={setIsOpen} />}
             </div>
-            <Calendar localizer={localizer} events={allEvents} startAccessor="start" onSelectEvent={event => alert(event.description)} endAccessor="end" style={{ height: 700, margin: "50px" }} />
+            <Calendar localizer={localizer} events={allEvents} startAccessor="start" onSelectEvent={event => tadam(event)} endAccessor="end" style={{ height: 700, margin: "50px" }} />
         </div>
     );
 }
