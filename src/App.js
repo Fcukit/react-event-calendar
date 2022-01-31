@@ -21,17 +21,14 @@ const localizer = dateFnsLocalizer({
     locales,
 });
 
-const events = [];
-
 function App() {
-    const [newEvent, setNewEvent] = useState({ title: "", start: "", end: "" });
-    const [allEvents, setAllEvents] = useState(events);
+    const [allEvents, setEvents] = useState([]);
 
-    useEffect(() => {
+    const getEvents = async () => {
         fetch("https://api.airtable.com/v0/appD9YFLSX3Kflhy6/Events?api_key=keyhPyeleDSLqACg1")
           .then((res) => res.json())
           .then((data) => {
-            setAllEvents(data.records.map((record) => {
+            setEvents(data.records.map((record) => {
                 var offset = new Date().getTimezoneOffset();
                 return {
                     title: record.fields.Title,
@@ -46,12 +43,18 @@ function App() {
           .catch((error) => {
             console.log(error);
           });
+      };
+
+      useEffect(() => {
+        const timer = setInterval(getEvents, 2000);
+        return () => clearInterval(timer);
       }, []);
 
 
-    function handleAddEvent() {
-        setAllEvents([...allEvents, newEvent]);
-    }
+    useEffect(() => {
+
+      }, []);
+
 
     return (
         <div className="App">
